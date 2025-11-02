@@ -1,0 +1,34 @@
+@font-face {
+    font-family: "HYWenHei";
+    src: url("font/HYWenHei.ttf");
+}
+
+@font-face {
+    font-family: "Gloock";
+    src: url("font/Gloock-Regular.ttf");
+}
+
+:root {
+    --c-black: #151515;
+    --c-white: #dddddd;
+    --c-primary: #ccc4a5;
+    --c-strong: #c7af43;
+    --c-danger: #803b3b;
+    /* --c-primary: #faf0c8; */
+}
+
+* {
+    font-family: "HYWenHei";
+    color: var(--c-black);
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+body {
+    background-color: #000000;
+}
+
+h1 {
+    font-family: "Gloock";
+}
