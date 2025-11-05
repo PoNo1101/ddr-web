@@ -49,7 +49,7 @@ function getCompletionTime(item: HistoryContent) {
     <div
       class="node history"
       v-for="(item, i) in store.getHistory.reverse()"
-      :style="{ top: `${points[i]!.y}px`, left: `${points[i]!.x}px` }"
+      :style="points[i] ? { top: `${points[i].y}px`, left: `${points[i].x}px` } : {}"
     >
       <div class="node-info">
         <p>
@@ -60,13 +60,13 @@ function getCompletionTime(item: HistoryContent) {
           Completed at <strong>{{ getCompletionTime(item) }}</strong>
         </p>
       </div>
-      <div class="line" :style="{ left: `${-300 - points[i]!.x}px` }">
+      <div v-if="points[i]" class="line" :style="{ left: `${-300 - points[i].x}px` }">
         <svg height="300" width="680" xmlns="http://www.w3.org/2000/svg">
           <line
             v-if="points[i - 1]"
             :x1="340 + points[i - 1]!.x"
             y1="0"
-            :x2="340 + points[i]!.x"
+            :x2="340 + points[i].x"
             y2="300"
             style="stroke: white; stroke-width: 2"
           />
@@ -74,7 +74,7 @@ function getCompletionTime(item: HistoryContent) {
             v-else
             x1="300"
             y1="0"
-            :x2="340 + points[i]!.x"
+            :x2="340 + points[i].x"
             y2="300"
             style="stroke: white; stroke-width: 2"
           />
