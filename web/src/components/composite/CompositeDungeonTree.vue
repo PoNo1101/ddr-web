@@ -13,7 +13,6 @@ function rand(min: number, max: number) {
 const points = ref<{ x: number; y: number }[]>([])
 const history = store.getHistory.reverse()
 onMounted(() => {
-  console.log('mount')
   for (let i = 0; i < store.getHistory.length; i++) {
     const x = Math.round(rand(-300, 300))
     const y = step + i * step
