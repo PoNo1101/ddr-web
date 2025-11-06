@@ -2,6 +2,7 @@
 import { getImageUrl } from '@/service/utils'
 import { useTemporaryGameStore, type HistoryContent } from '@/stores/temporary_game_store'
 import CommonButton from '../common/CommonButton.vue'
+import { onMounted, ref } from 'vue'
 
 const store = useTemporaryGameStore()
 const step = 300
@@ -9,12 +10,16 @@ function rand(min: number, max: number) {
   return Math.random() * (max - min) + min
 }
 
-const points: { x: number; y: number }[] = []
-for (let i = 0; i < store.getHistory.length; i++) {
-  const x = Math.round(rand(-300, 300))
-  const y = step + i * step
-  points.push({ x, y })
-}
+const points = ref<{ x: number; y: number }[]>([])
+const history = store.getHistory.reverse()
+onMounted(() => {
+  console.log('mount')
+  for (let i = 0; i < store.getHistory.length; i++) {
+    const x = Math.round(rand(-300, 300))
+    const y = step + i * step
+    points.value.push({ x, y })
+  }
+})
 
 function getCompletionTime(item: HistoryContent) {
   const elapsed = item.complete - store.start_time
@@ -48,7 +53,7 @@ function getCompletionTime(item: HistoryContent) {
     </div>
     <div
       class="node history"
-      v-for="(item, i) in store.getHistory.reverse()"
+      v-for="(item, i) in history"
       :style="points[i] ? { top: `${points[i].y}px`, left: `${points[i].x}px` } : {}"
     >
       <div class="node-info">
