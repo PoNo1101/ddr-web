@@ -1,8 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const version = import.meta.env.VITE_APP_VERSION ?? 'local-build'
+</script>
 
 <template>
   <div class="composite-footer">
-    <p>version-a0.0.1</p>
+    <p>version {{ version }}</p>
   </div>
 </template>
 
