@@ -68,5 +68,7 @@ export const useTemporaryGameStore = defineStore('tmp_game_store', {
     getCurrent: (state): Content | null => state.current,
     getLevel: (state): number => state.level,
     getHistory: (state): HistoryContent[] => state.history,
+    isBoss: (state): boolean => [5, 10, 15].includes(state.level),
+    // isBoss: (state): boolean => true,
   },
 })

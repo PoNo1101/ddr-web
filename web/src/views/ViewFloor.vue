@@ -4,6 +4,7 @@ import CompositeNavigation from '@/components/composite/CompositeNavigation.vue'
 import LayoutPageContainer from '@/components/layout/LayoutPageContainer.vue'
 import Circle from '@/assets/images/circle2.png'
 import { useTemporaryGameStore } from '@/stores/temporary_game_store'
+import BossIcon from '@/assets/images/boss.png'
 import router from '@/router'
 
 const store = useTemporaryGameStore()
@@ -17,9 +18,12 @@ function onMouseUp() {
   <div class="view-climb">
     <CompositeNavigation mode="light" />
     <LayoutPageContainer>
+      <img class="view-floor-boss-icon" :src="BossIcon" v-if="store.isBoss" />
       <div class="view-climb-roll-button">
         <img :src="Circle" alt="" />
-        <CommonButton @click="onMouseUp"> FLOOR {{ store.level }} </CommonButton>
+        <CommonButton :class="{ boss: store.isBoss }" @click="onMouseUp">
+          FLOOR {{ store.level }}
+        </CommonButton>
         <div class="view-climb-roll-button-dots">
           <div
             v-for="i in 6"
@@ -39,6 +43,12 @@ function onMouseUp() {
 </template>
 
 <style scoped>
+.view-floor-boss-icon {
+  position: absolute;
+  width: 100px;
+  top: 35vh;
+}
+
 .view-climb {
   background-color: var(--c-white);
   color: var(--c-black);
@@ -58,6 +68,12 @@ function onMouseUp() {
 .view-climb-roll-button > button {
   transition: 600ms cubic-bezier(0.19, 1, 0.22, 1);
   position: relative;
+}
+
+.view-climb-roll-button > button.boss:hover {
+  background-color: var(--c-danger);
+  color: var(--c-white);
+  box-shadow: var(--c-danger) 0 0 30px 0;
 }
 
 .view-climb-roll-button > button:hover {
