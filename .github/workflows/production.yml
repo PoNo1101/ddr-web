@@ -1,15 +1,14 @@
-name: BUILD & DEPLOY STAGING
-run-name: STAGING
-
+name: BUILD & DEPLOY PRODUCTION
+run-name: PRODUCTION
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*"
 
 jobs:
   build:
     env:
-      VITE_APP_VERSION: staging
+      VITE_APP_VERSION: ${{ github.ref_name }}
     defaults:
       run:
         working-directory: ./web
@@ -38,8 +37,8 @@ jobs:
           path: web/dist
       - uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.STAGING_SSH_HOST }}
-          username: ${{ secrets.STAGING_SSH_USER }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
+          host: ${{ secrets.PRODUCTION_SSH_HOST }}
+          username: ${{ secrets.PRODUCTION_SSH_USER }}
+          key: ${{ secrets.PRODUCTION_SSH_KEY }}
           source: web/dist/*
-          target: ${{ secrets.STAGING_DEPLOY_PATH }}
+          target: ${{ secrets.PRODUCTION_DEPLOY_PATH }}
