@@ -1,0 +1,37 @@
+name: learn-github-actions
+run-name: STAGING
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: alpine-latest
+    steps:
+        - uses: actions/checkout@v4
+        - uses: actions/setup-node@v4
+          with:
+            node-version: 22
+        - run: npm ci
+        - run: npm run build
+        - uses: actions/upload-artifact@v4
+          with:
+            name: dist
+            path: dist
+  deploy:
+    runs-on: alpine-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: dist/*
+          target: ${{ secrets.DEPLOY_PATH }}
+        
