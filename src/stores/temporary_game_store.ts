@@ -18,7 +18,7 @@ type DeepDungeonState = {
  * Alpha version store, very client based.
  * Later versions will be more optimized
  */
-export const useTemporaryGameStore = defineStore('tmp_game_store', {
+export const useGameStore = defineStore('game_store', {
   state: (): DeepDungeonState => ({
     level: 1,
     current: null,

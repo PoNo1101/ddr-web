@@ -3,11 +3,11 @@ import CommonButton from '@/components/common/CommonButton.vue'
 import CompositeNavigation from '@/components/composite/CompositeNavigation.vue'
 import LayoutPageContainer from '@/components/layout/LayoutPageContainer.vue'
 import Circle from '@/assets/images/circle2.png'
-import { useTemporaryGameStore } from '@/stores/temporary_game_store'
+import { useGameStore } from '@/stores/temporary_game_store'
 import BossIcon from '@/assets/images/boss.png'
 import router from '@/router'
 
-const store = useTemporaryGameStore()
+const store = useGameStore()
 const onClick = () => router.push('/roll')
 </script>
 

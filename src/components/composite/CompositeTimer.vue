@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { CONST_SECTION_DURATION, useTemporaryGameStore } from '@/stores/temporary_game_store'
+import { CONST_SECTION_DURATION, useGameStore } from '@/stores/temporary_game_store'
 import { ref } from 'vue'
 
 const remaining = ref<number>()
-const store = useTemporaryGameStore()
+const store = useGameStore()
 const timer = setInterval(() => {
   const now = Date.now()
   const elapsed = now - store.start_time

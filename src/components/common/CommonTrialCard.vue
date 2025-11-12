@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import router from '@/router'
 import { getImageUrl } from '@/service/utils'
-import { useTemporaryGameStore } from '@/stores/temporary_game_store'
+import { useGameStore } from '@/stores/temporary_game_store'
 import { onMounted, ref, watch } from 'vue'
 
-const store = useTemporaryGameStore()
+const store = useGameStore()
 const rolling = ref<boolean>(true)
 const rolling_element = ref()
 

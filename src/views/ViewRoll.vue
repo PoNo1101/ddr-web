@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import CommonTrialCard from '@/components/common/CommonTrialCard.vue'
-import { useTemporaryGameStore } from '@/stores/temporary_game_store'
+import { useGameStore } from '@/stores/temporary_game_store'
 import { onMounted } from 'vue'
 
-const store = useTemporaryGameStore()
+const store = useGameStore()
 onMounted(() => {
   store.roll()
 })

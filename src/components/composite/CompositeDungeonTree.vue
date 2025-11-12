@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { getImageUrl } from '@/service/utils'
-import { useTemporaryGameStore, type HistoryContent } from '@/stores/temporary_game_store'
+import { useGameStore, type HistoryContent } from '@/stores/temporary_game_store'
 import CommonButton from '../common/CommonButton.vue'
 import { onMounted, ref } from 'vue'
 
-const store = useTemporaryGameStore()
+const store = useGameStore()
 const step = 300
 function rand(min: number, max: number) {
   return Math.random() * (max - min) + min
