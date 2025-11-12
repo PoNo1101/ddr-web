@@ -3,7 +3,6 @@ import background from '@/assets/images/home.png'
 import Circle from '@/assets/images/circle.png'
 import LayoutViewContainer from '@/components/layout/LayoutViewContainer.vue'
 import CompositeNavigation from '@/components/composite/CompositeNavigation.vue'
-import CompositeFooter from '@/components/composite/CompositeFooter.vue'
 </script>
 
 <template>

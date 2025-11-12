@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
 <template>
   <div class="view-death">
     <CompositeNavigation mode="dark" />
-    <div class="message">
+    <div class="view-death-message">
       <p>YOU DIED</p>
       <RouterLink to="/floor">
         <CommonButton>RETRY</CommonButton>
@@ -44,7 +44,7 @@ import { RouterLink } from 'vue-router'
   padding: 32px;
 }
 
-.message {
+.view-death-message {
   display: flex;
   margin-top: 300px;
   flex-direction: column;
@@ -53,13 +53,13 @@ import { RouterLink } from 'vue-router'
   height: 50%;
 }
 
-.message > p {
+.view-death-message > p {
   font-size: 86px;
   animation: youdied 4s ease-out;
   animation-fill-mode: forwards;
 }
 
-.message > a {
+.view-death-message > a {
   opacity: 0;
   animation: youdied_button 3000ms 4s;
   animation-fill-mode: forwards;

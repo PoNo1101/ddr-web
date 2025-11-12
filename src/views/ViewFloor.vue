@@ -8,23 +8,20 @@ import BossIcon from '@/assets/images/boss.png'
 import router from '@/router'
 
 const store = useTemporaryGameStore()
-
-function onMouseUp() {
-  router.push('/roll')
-}
+const onClick = () => router.push('/roll')
 </script>
 
 <template>
-  <div class="view-climb">
+  <div class="view-floor">
     <CompositeNavigation mode="light" />
     <LayoutPageContainer class="view-floor-container">
       <img class="view-floor-boss-icon" :src="BossIcon" v-if="store.isBoss" />
-      <div class="view-climb-roll-button">
+      <div class="view-floor-roll-button">
         <img :src="Circle" alt="" />
-        <CommonButton :class="{ boss: store.isBoss }" @click="onMouseUp">
+        <CommonButton :class="{ boss: store.isBoss }" @click="onClick">
           FLOOR {{ store.level }}
         </CommonButton>
-        <div class="view-climb-roll-button-dots">
+        <div class="view-floor-roll-button-dots">
           <div
             v-for="i in 6"
             :style="{
@@ -49,7 +46,7 @@ function onMouseUp() {
   top: 35vh;
 }
 
-.view-climb {
+.view-floor {
   background-color: var(--c-white);
   color: var(--c-black);
   padding: 32px;
@@ -61,31 +58,31 @@ function onMouseUp() {
   height: calc(100% - 20px);
 }
 
-.view-climb-roll-button-dots > div {
+.view-floor-roll-button-dots > div {
   position: absolute;
 }
 
-.view-climb-roll-button {
+.view-floor-roll-button {
   position: relative;
 }
 
-.view-climb-roll-button > button {
+.view-floor-roll-button > button {
   transition: 600ms cubic-bezier(0.19, 1, 0.22, 1);
   position: relative;
 }
 
-.view-climb-roll-button > button.boss:hover {
+.view-floor-roll-button > button.boss:hover {
   background-color: var(--c-danger);
   color: var(--c-white);
   box-shadow: var(--c-danger) 0 0 30px 0;
 }
 
-.view-climb-roll-button > button:hover {
+.view-floor-roll-button > button:hover {
   position: relative;
   box-shadow: var(--c-primary) 0 0 30px 0;
 }
 
-.view-climb-roll-button > button:hover {
+.view-floor-roll-button > button:hover {
   background-color: var(--c-white);
   transition: 600ms cubic-bezier(0.19, 1, 0.22, 1);
   transform: scale(110%);
@@ -93,7 +90,7 @@ function onMouseUp() {
   content: 'bla';
 }
 
-.view-climb-roll-button > img {
+.view-floor-roll-button > img {
   transform: translate(-50%, -50%);
   position: absolute;
   pointer-events: none;
@@ -102,9 +99,5 @@ function onMouseUp() {
   filter: brightness(0) saturate(100%);
   opacity: 0.1;
   width: 420px;
-}
-
-p {
-  color: var(--c-black);
 }
 </style>
