@@ -36,6 +36,4 @@ coverage
 __screenshots__/
 
 
-src/assets/images/content/*.png
-
 .env
