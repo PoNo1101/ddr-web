@@ -3,23 +3,32 @@ import CommonButton from '@/components/common/CommonButton.vue'
 import CompositeNavigation from '@/components/composite/CompositeNavigation.vue'
 import LayoutPageContainer from '@/components/layout/LayoutPageContainer.vue'
 import Circle from '@/assets/images/circle2.png'
-import { useGameStore } from '@/stores/temporary_game_store'
 import BossIcon from '@/assets/images/boss.png'
 import router from '@/router'
+import { $_level_get, $_level_isboss } from '@/composable/storage/composable_storage_level'
+import { $_draft_generate } from '@/composable/storage/composable_storage_draft'
+import { $_start_init } from '@/composable/storage/composable_storage_start'
 
-const store = useGameStore()
-const onClick = () => router.push('/roll')
+const level = $_level_get().level
+const onClick = () => {
+  if (level === 1) {
+    $_draft_generate()
+    $_start_init()
+  }
+
+  router.push('/roll')
+}
 </script>
 
 <template>
   <div class="view-floor">
     <CompositeNavigation mode="light" />
     <LayoutPageContainer class="view-floor-container">
-      <img class="view-floor-boss-icon" :src="BossIcon" v-if="store.isBoss" />
+      <img class="view-floor-boss-icon" :src="BossIcon" v-if="$_level_isboss()" />
       <div class="view-floor-roll-button">
         <img :src="Circle" alt="" />
-        <CommonButton :class="{ boss: store.isBoss }" @click="onClick">
-          FLOOR {{ store.level }}
+        <CommonButton :class="{ boss: $_level_isboss() }" @click="onClick">
+          FLOOR {{ level }}
         </CommonButton>
         <div class="view-floor-roll-button-dots">
           <div

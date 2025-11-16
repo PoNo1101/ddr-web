@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import CommonTrialCard from '@/components/common/CommonTrialCard.vue'
-import { useGameStore } from '@/stores/temporary_game_store'
-import { onMounted } from 'vue'
+import { $_draft_get } from '@/composable/storage/composable_storage_draft'
+import { $_level_set_content } from '@/composable/storage/composable_storage_level'
+import router from '@/router'
 
-const store = useGameStore()
-onMounted(() => {
-  store.roll()
-})
+function pick(content: Content) {
+  $_level_set_content(content)
+  router.push('/climb')
+}
 </script>
 
 <template>
   <div class="view-roll">
-    <div class="view-roll-cards" v-if="store.getDraft">
-      <CommonTrialCard :content="store.getDraft[0]!" />
-      <CommonTrialCard :content="store.getDraft[1]!" />
-      <CommonTrialCard :content="store.getDraft[2]!" />
+    <div class="view-roll-cards" v-if="$_draft_get()">
+      <CommonTrialCard v-for="item in $_draft_get()" :content="item" @click="pick(item)" />
     </div>
   </div>
 </template>

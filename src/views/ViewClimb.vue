@@ -2,14 +2,13 @@
 import CompositeNavigation from '@/components/composite/CompositeNavigation.vue'
 import CompositeDungeonTree from '@/components/composite/CompositeDungeonTree.vue'
 import CommonFog from '@/components/common/CommonFog.vue'
-import { useGameStore } from '@/stores/temporary_game_store'
 import { onMounted } from 'vue'
 import router from '@/router'
 import CompositeTimer from '@/components/composite/CompositeTimer.vue'
+import { $_level_get_content } from '@/composable/storage/composable_storage_level'
 
-const store = useGameStore()
 onMounted(() => {
-  if (store.current === null) {
+  if ($_level_get_content() === null) {
     router.push('/floor')
   }
 })

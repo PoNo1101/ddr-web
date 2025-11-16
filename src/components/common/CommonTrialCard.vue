@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import router from '@/router'
+import { $_level_bag } from '@/composable/storage/composable_storage_level'
 import { getImageUrl } from '@/service/utils'
-import { useGameStore } from '@/stores/temporary_game_store'
+import { useGameStore } from '@/stores/game_store'
 import { onMounted, ref, watch } from 'vue'
 
-const store = useGameStore()
 const rolling = ref<boolean>(true)
 const rolling_element = ref()
 
@@ -14,7 +13,11 @@ defineProps<{
 
 const contents = getSlice(10)
 function getSlice(n: number) {
-  const bag = store.getBag
+  const bag = $_level_bag()
+  if (bag === null) {
+    throw 'Empty bag'
+  }
+
   const scrambled = bag.sort(() => Math.random() - 0.5)
   return scrambled.slice(0, Math.min(bag.length, n))
 }
@@ -28,10 +31,7 @@ onMounted(() => {
   )
 })
 
-function pick(content: Content) {
-  store.current = content
-  router.push('/climb')
-}
+const emits = defineEmits(['click'])
 </script>
 
 <template>
@@ -46,7 +46,7 @@ function pick(content: Content) {
       <div v-else class="common-content-card-picked">
         <img class="dummy" v-for="content in getSlice(5)" :src="getImageUrl(content.image)" />
         <div class="common-trial-card-image">
-          <img @click="pick(content)" :src="getImageUrl(content.image)" />
+          <img @click="emits('click')" :src="getImageUrl(content.image)" />
           <p>{{ content.name }}</p>
         </div>
         <img

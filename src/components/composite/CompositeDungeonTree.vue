@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { getImageUrl } from '@/service/utils'
-import { useGameStore, type HistoryContent } from '@/stores/temporary_game_store'
+import { useGameStore } from '@/stores/game_store'
 import CommonButton from '../common/CommonButton.vue'
 import { onMounted, ref } from 'vue'
+import { $_start_get } from '@/composable/storage/composable_storage_start'
+import {
+  $_level_get,
+  $_level_history_get,
+  $_level_history_sorted,
+} from '@/composable/storage/composable_storage_level'
 
 const store = useGameStore()
 const step = 300
@@ -11,17 +17,25 @@ function rand(min: number, max: number) {
 }
 
 const points = ref<{ x: number; y: number }[]>([])
-const history = store.getHistory.reverse()
+const history = [...$_level_history_sorted()]
+const current = $_level_get().content
+const level = $_level_get().level
+
 onMounted(() => {
-  for (let i = 0; i < store.getHistory.length; i++) {
+  for (let i = 0; i < history.length; i++) {
     const x = Math.round(rand(-300, 300))
     const y = step + i * step
     points.value.push({ x, y })
   }
 })
 
-function getCompletionTime(item: HistoryContent) {
-  const elapsed = item.complete - store.start_time
+function getCompletionTime(time: number) {
+  const start = $_start_get()
+  if (start === null) {
+    throw "Can't get completion without start time"
+  }
+
+  const elapsed = time - start
   const e = (num: number) => String(num).padStart(2, '0')
   const s = Math.floor((elapsed / 1000) % 60)
   const m = Math.floor(elapsed / 60 / 1000)
@@ -35,19 +49,19 @@ function getCompletionTime(item: HistoryContent) {
 
 <template>
   <div class="composite-dungeon-tree">
-    <div class="node" v-if="store.getCurrent">
+    <div class="node" v-if="current">
       <div class="node-info" :style="{ left: '136px' }">
         <p>
-          Floor <strong>{{ store.getLevel }}</strong>
+          Floor <strong>{{ level }}</strong>
         </p>
-        <p>{{ store.getCurrent.name }}</p>
+        <p>{{ current.name }}</p>
         <div class="node-options">
           <CommonButton @click="store.next()">VALIDATE</CommonButton>
           <CommonButton @click="store.wipe()">CALL WIPE</CommonButton>
         </div>
       </div>
       <div class="node-image">
-        <img :src="getImageUrl(store.getCurrent.image)" />
+        <img :src="getImageUrl(current.image)" />
       </div>
     </div>
     <div
@@ -55,13 +69,13 @@ function getCompletionTime(item: HistoryContent) {
       v-for="(item, i) in history"
       :style="points[i] ? { top: `${points[i].y}px`, left: `${points[i].x}px` } : {}"
     >
-      <div class="node-info">
+      <div class="node-info" v-if="item.content">
         <p>
-          Floor <strong>{{ store.getLevel - i - 1 }}</strong>
+          Floor <strong>{{ level - i - 1 }}</strong>
         </p>
-        <p>{{ item.name }}</p>
-        <p>
-          Completed at <strong>{{ getCompletionTime(item) }}</strong>
+        <p>{{ item.content.name }}</p>
+        <p v-if="item.complete">
+          Completed at <strong>{{ getCompletionTime(item.complete) }}</strong>
         </p>
       </div>
       <div v-if="points[i]" class="line" :style="{ left: `${-300 - points[i].x}px` }">
@@ -84,14 +98,14 @@ function getCompletionTime(item: HistoryContent) {
           />
         </svg>
       </div>
-      <div class="node-image">
-        <img :src="getImageUrl(item.image)" />
+      <div class="node-image" v-if="item.content">
+        <img :src="getImageUrl(item.content.image)" />
       </div>
     </div>
     <div
       class="node start"
       :style="{
-        top: `${step + store.getHistory.length * step}px`,
+        top: `${step + history.length * step}px`,
       }"
     >
       <p>ENTRANCE</p>
